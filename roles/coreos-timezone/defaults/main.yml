@@ -1,0 +1,3 @@
+---
+# defaults file for mkaag.coreos-timezone
+coreos_timezone: 'Europe/Amsterdam'

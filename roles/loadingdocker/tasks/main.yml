@@ -1,0 +1,19 @@
+
+- name: try docker containerlist [containers]
+  shell: docker images | grep {{item}}
+  with_items: containers
+  register: haveallcontainers
+  ignore_errors: true
+
+- name: download pull containerlist [containers]
+  command: docker pull {{ item }}
+  with_items: containers
+  when: haveallcontainers|failed
+
+- name: print images
+  command: docker images
+  register: io
+  when: haveallcontainers|failed
+
+- debug: msg="{{ io.stdout }}"
+  when: haveallcontainers|failed

@@ -1,0 +1,11 @@
+---
+- name: load containers defined in vars/containers
+  hosts: all
+  sudo: yes
+  gather_facts: False
+  vars:
+    containers:
+      - scratch
+
+  roles:
+    - loadingdocker

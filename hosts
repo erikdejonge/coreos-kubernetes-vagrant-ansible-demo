@@ -1,0 +1,23 @@
+core1 ansible_ssh_host=192.168.14.41 ansible_ssh_port=22
+core2 ansible_ssh_host=192.168.14.42 ansible_ssh_port=22
+core3 ansible_ssh_host=192.168.14.43 ansible_ssh_port=22
+
+[masters]
+core1
+
+[etcd]
+core2
+
+[nodes]
+core2
+core3
+
+[all]
+core1
+core2
+core3
+
+[all_groups:children]
+masters
+etcd
+nodes

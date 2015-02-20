@@ -1,0 +1,3 @@
+---
+# tasks file for mkaag.coreos-timezone
+- include: timezone.yml

@@ -1,0 +1,45 @@
+---
+- name: Check if bootstrap is needed
+  hosts: all
+  gather_facts: False
+
+  tasks:
+    - raw: stat $HOME/.bootstrapped > /dev/null 2> /dev/null
+      register: need_bootstrap
+      ignore_errors: True
+
+    - raw: stat /home/core/pypy/lib/libtinfo.so.5 > /dev/null 2> /dev/null
+      register: need_bootstrap
+      ignore_errors: True
+      when: need_bootstrap | failed
+
+- name: bootstrap coreos hosts
+  hosts: all
+  gather_facts: False
+
+  roles:
+    - coreos-bootstrap
+
+- name: set timezone to europe
+  hosts: all
+  sudo: true
+  gather_facts: False
+
+  vars:
+    coreos_timezone: 'Europe/Amsterdam'
+
+  roles:
+    - coreos-timezone
+
+- name: shutdown
+  hosts: all
+  gather_facts: False
+  sudo: true
+
+  tasks:
+    - name: make .bootstrapped file
+      command: touch $HOME/.bootstrapped
+      when: need_bootstrap | failed
+    #- command: sudo shutdown -h now "Ansible updates triggered"
+    #  ignore_errors: true
+    #  when: need_bootstrap | failed

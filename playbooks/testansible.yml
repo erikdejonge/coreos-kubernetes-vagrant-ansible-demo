@@ -1,0 +1,11 @@
+---
+- name: do simple test
+  hosts: all
+  sudo: yes
+
+  tasks:
+    - name: print a date
+      command: date
+      register: dateout
+
+    - debug: msg="System {{ inventory_hostname }} has date {{ dateout.stdout }}"
