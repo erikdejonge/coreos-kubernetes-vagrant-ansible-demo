@@ -14,7 +14,6 @@ Ansible integration with:
     * [vagrant vmware plugin](http://www.vagrantup.com/vmware)
 * python
     * pip install vagrant
-* [Puffin, awk replacement in python](https://github.com/kespindler/puffin)
 
 
 ####Initial setup
