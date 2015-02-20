@@ -148,7 +148,11 @@ contexts: {}
 current-context: ""
 preferences: {}
 users: {}
-$ cluster/kubectl.sh --kubeconfig="./.kubeconfig" --cluster="test-cluster-mac" create -f ./guestbook/redis-master-service.yaml ^C
+```
+```bash
+$ cluster/kubectl.sh --kubeconfig="./.kubeconfig" --cluster="test-cluster-mac" create -f ./guestbook/redis-master-service.yaml 
+```
+```bash
 $ cluster/kubectl.sh --kubeconfig="./.kubeconfig" --cluster="test-cluster-mac" get services
 current-context: ""
 Running: cluster/../cluster/gce/../../_output/local/bin/darwin/amd64/kubectl --kubeconfig=./.kubeconfig --cluster=test-cluster-mac get services
