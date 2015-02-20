@@ -1,4 +1,4 @@
-#coreos-kubernetes-Vagrant-Ansible-demo
+#CoreOS-Kubernetes-Vagrant-Ansible-demo
 Test setup to run a kubernetes cluster locally with Vagrant and the VMware plugin, Ansible is also initialized for CoreOS.
 
 Based on:
