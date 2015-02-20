@@ -118,3 +118,42 @@ To delete everything
 ./deletecluster.sh
 ```
 
+####Example
+From the [Kubernetes guestbook example](https://github.com/GoogleCloudPlatform/kubernetes/tree/master/examples/guestbook)
+
+######.kubeconfig
+```yaml
+apiVersion: v1
+clusters:
+- cluster:
+    api-version: v1beta2
+    server: http://core1.a8.nl:8080
+  name: test-cluster-mac
+```
+
+[build kubernetes here, for the kubectl app](https://github.com/GoogleCloudPlatform/kubernetes/tree/master/build)
+
+```bash
+$ cluster/kubectl.sh --kubeconfig="./.kubeconfig" config view
+current-context: ""
+Running: cluster/../cluster/gce/../../_output/local/bin/darwin/amd64/kubectl --kubeconfig=./.kubeconfig config view
+clusters:
+  test-cluster-linux:
+    api-version: v1beta2
+    server: http://node1.a8.nl:8080
+  test-cluster-mac:
+    api-version: v1beta2
+    server: http://core1.a8.nl:8080
+contexts: {}
+current-context: ""
+preferences: {}
+users: {}
+$ cluster/kubectl.sh --kubeconfig="./.kubeconfig" --cluster="test-cluster-mac" create -f ./guestbook/redis-master-service.yaml ^C
+$ cluster/kubectl.sh --kubeconfig="./.kubeconfig" --cluster="test-cluster-mac" get services
+current-context: ""
+Running: cluster/../cluster/gce/../../_output/local/bin/darwin/amd64/kubectl --kubeconfig=./.kubeconfig --cluster=test-cluster-mac get services
+NAME                LABELS                                    SELECTOR            IP                  PORT
+kubernetes          component=apiserver,provider=kubernetes   <none>              10.100.0.2          443
+kubernetes-ro       component=apiserver,provider=kubernetes   <none>              10.100.0.1          80
+redis-master        name=redis-master                         name=redis-master   10.100.90.132       6379
+```
