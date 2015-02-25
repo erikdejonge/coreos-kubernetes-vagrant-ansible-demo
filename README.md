@@ -71,6 +71,32 @@ core3:
 Fri Feb 20 10:27:28 CET 2015
 ```
 
+######Run commands on all servers in parallel
+```bash
+$ cl -pc "sudo docker images"
+remote parallel command: sudo docker images
+
+on: core1
+REPOSITORY                 TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+tools   latest              e3b9f08b02c6        8 hours ago         36.72 MB
+base    latest              6f9f0a2e3751        9 days ago          979.8 MB
+
+on: core2
+REPOSITORY                 TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+tools   latest              e3b9f08b02c6        8 hours ago         36.72 MB
+base    latest              6f9f0a2e3751        9 days ago          979.8 MB
+
+on: core3
+REPOSITORY                 TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+tools   latest              e3b9f08b02c6        8 hours ago         36.72 MB
+base    latest              6f9f0a2e3751        9 days ago          979.8 MB
+
+on: core4
+REPOSITORY                 TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+tools   latest              e3b9f08b02c6        8 hours ago         36.72 MB
+base    latest              6f9f0a2e3751        9 days ago          979.8 MB
+````
+
 ######Run Ansible playbooks
 ```bash
 python cluster.py -p all:./playbooks/testAnsible.yml
