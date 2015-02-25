@@ -104,18 +104,18 @@ Vagrant.configure('2') do |config|
                 else
                     data = YAML.load(IO.readlines('configscripts/node.yml')[1..-1].join)
                 end
-                gateway = open("config/gateway.txt").read
-                environ = "COREOS_PUBLIC_IPV4="+pubipaddress+"\nCOREOS_PRIVATE_IPV4="+privipaddress
-
-                envvars = open("config/envvars.sh").read
+                data['coreos']['update']['group'] = updategroup
+                gateway = open('config/gateway.txt').read
+                environ = 'COREOS_PUBLIC_IPV4='+pubipaddress+"\nCOREOS_PRIVATE_IPV4="+privipaddress
+                envvars = open('config/envvars.sh').read
+                envvars = envvars.strip + "\n"
                 envvars += "export ETCDCTL_PEERS='http://"+$etcdaddress+":4001'\n"
                 envvars += "export FLEETCTL_ENDPOINT='http://"+$etcdaddress+":4001'\n"
-                envvars += "export DEFAULT_IPV4='"+pubipaddress+"'\n"
-
-                data["write_files"][0]["content"] = "[Match]\nName=ens34\n\n[Network]\nAddress="+pubipaddress+"/24\nGateway="+gateway+"\nDNS=8.8.8.8\nDNS=8.8.4.4\n\n"
-                data["write_files"][1]["content"] = environ
-                data["write_files"][2]["content"] = envvars
-                data['hostname'] = config.vm.hostname
+                envvars += "export DEFAULT_IPV4='"+pubipaddress+"'\n\n"
+                data['write_files'][0]['content'] = "[Match]\nName=ens34\n\n[Network]\nAddress="+pubipaddress+"/24\nGateway="+gateway+"\nDNS=8.8.8.8\nDNS=8.8.4.4\n\n"
+                data['write_files'][1]['content'] = environ
+                data['write_files'][2]['content'] = envvars
+                data['hostname'] = configvm.vm.hostname
                 yaml = YAML.dump(data)
                 yaml = yaml.gsub("\\{", "{")
                 File.open($cloud_config_path, 'w') { |file| file.write("#cloud-config\n\n#{yaml}\n\n") }

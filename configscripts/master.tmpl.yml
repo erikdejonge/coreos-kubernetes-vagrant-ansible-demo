@@ -101,13 +101,13 @@ coreos:
         User=etcd
         PermissionsStartOnly=true
         ExecStart=/usr/bin/etcd \
-        --name ${DEFAULT_IPV4} \
-        --addr ${DEFAULT_IPV4}:4001 \
+        --name <name-node> \
+        --addr <master-private-ip>:4001 \
         --bind-addr 0.0.0.0 \
         --cluster-active-size 1 \
         --data-dir /var/lib/etcd \
         --http-read-timeout 86400 \
-        --peer-addr ${DEFAULT_IPV4}:7001 \
+        --peer-addr <master-private-ip>:7001 \
         --snapshot true
         Restart=always
         RestartSec=10s
