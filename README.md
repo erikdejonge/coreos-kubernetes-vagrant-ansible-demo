@@ -12,9 +12,10 @@ Ansible integration with:
 * [VMware Fusion 7.0](http://www.vmware.com/products/fusion/fusion-evaluation)
 * [Vagrant](https://www.Vagrantup.com)
     * [Vagrant VMware plugin](http://www.vagrantup.com/VMware)
+* [Paramiko ssh for python](http://docs.paramiko.org/en/1.15/)
 * python
     * pip install Vagrant
-
+    * pip install paramiko
 
 ####Initial setup
 Find replace 'myusername' with the current username
