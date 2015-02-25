@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # coding=utf-8
 """
-that cluster
+Cluster management tool for setting up a coreos-vagrant cluster
+25-02-15: parallel execution of ssh using paramiko
 """
 
 import time
