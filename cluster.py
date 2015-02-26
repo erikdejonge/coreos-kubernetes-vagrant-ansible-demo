@@ -282,7 +282,7 @@ def remote_cmd(server, cmd):
     se = se.read()
 
     if len(se) > 0:
-        print "\033[31m", se, "\033[0m"
+        so = "\033[31m " + se + "\033[0m"
 
     return so
 
@@ -594,15 +594,23 @@ def show_config(options):
         run_cmd(cmd)
 
 
-def print_remote_command_result(result):
+def print_remote_command_result(result, lastoutput=""):
     """
     @type result: str, unicode
     @return: None
     """
     if "\n" in result.strip():
-        print "\033[37m" + str(result), "\033[0m"
+        if result != lastoutput:
+            print "\n\n\033[37m" + str(result), "\033[0m"
+        else:
+            print "same"
     else:
-        print "\033[37m", result, "\033[0m"
+        if result != lastoutput:
+            print "\n\n\033[37m", result, "\033[0m"
+        else:
+            print "same"
+
+    return result
 
 
 def remote_command(options):
@@ -626,14 +634,14 @@ def remote_command(options):
         print "\033[36mremote command:\033[0m\033[33m", options.command, "\033[0m"
 
     if server:
-        print "\033[36mon:\033[0m\033[33m", server, "\033[0m"
+        print "\033[36mon:\033[0m\033[33m", server, "\033[0m",
 
-    print
     if server is None:
         vmnames = get_vm_names()
 
         if options.command not in vmnames:
             commands = []
+            lastoutput = ""
 
             for name in vmnames:
                 cmd = options.command
@@ -644,8 +652,8 @@ def remote_command(options):
                     result = remote_cmd(name + '.a8.nl', cmd)
 
                     if result.strip():
-                        print "\033[36mon:\033[0m\033[33m", name, "\033[0m"
-                        print_remote_command_result(result)
+                        print "\033[36mon:\033[0m\033[33m", name + "\033[0m",
+                        lastoutput = print_remote_command_result(result, lastoutput)
                     else:
                         print "\033[36mon:\033[0m\033[33m", name, "\033[0m\033[36m... done\033[0m"
 
@@ -663,14 +671,19 @@ def remote_command(options):
                             time.sleep(float(options.wait))
 
             if len(commands) > 0:
-                expool = Pool(cpu_count())
+                workers = cpu_count()
+                if workers > len(commands):
+                    workers = len(commands)
 
-                for server, result in expool.map(remote_cmd_map, commands):
+                expool = Pool(workers + 1)
+                result = expool.map(remote_cmd_map, commands)
+
+                for server, result in result:
                     if result.strip():
-                        print "\033[36mon:\033[0m\033[33m", server.split(".")[0], "\033[0m"
-                        print_remote_command_result(result)
+                        print "\033[36mon:\033[0m\033[33m", server.split(".")[0]+"\033[0m",
+                        lastoutput = print_remote_command_result(result, lastoutput)
                     else:
-                        print "\033[36mon:\033[0m\033[33m", server.split(".")[0], "\033[0m\033[36m... done\033[0m"
+                        print "\033[36mon:\033[0m\033[33m", server.split(".")[0]+"\033[0m\033[36m... done\033[0m"
     else:
         cmd = options.command
         result = remote_cmd(server + '.a8.nl', cmd)
